@@ -52,11 +52,13 @@ class UserProfileSerializers(serializers.ModelSerializer):
         model = UserProfile
         fields = ['id', 'avatar', 'first_name', 'last_name', 'username', 'email', 'password', 'phone_number', 'role',
                   'account_created_date']
+        extra_kwargs = {'password': {'write_only': True}}
 
 class UserProfileUpdateSerializers(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['avatar', 'first_name', 'last_name', 'username', 'email', 'password', 'phone_number', 'role']
+        extra_kwargs = {'password': {'write_only': True}}
 
 class UserProfilePublicDateSerializers(serializers.ModelSerializer):
     class Meta:
