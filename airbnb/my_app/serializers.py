@@ -68,9 +68,14 @@ class CitySerializers(serializers.ModelSerializer):
         model = City
         fields = ['id', 'city']
 
+class ImageSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Images
+        fields = ['image']
+
 class PropertySerializers(serializers.ModelSerializer):
     city = CitySerializers(read_only=True)
-    image = serializers.ImageField(source='Images.image', read_only=True)
+    images = ImageSerializers(many=True, read_only=True, source='images_set')
     count_reviews = serializers.SerializerMethodField()
     avg_rating = serializers.SerializerMethodField()
     class Meta:
@@ -90,11 +95,6 @@ class ReviewListSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'guest', 'property', 'rating', 'comment', 'created_at']
-
-class ImageSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Images
-        fields = ['image']
 
 class AmenitySerializers(serializers.ModelSerializer):
     class Meta:
@@ -144,7 +144,7 @@ class BookingListSerializers(serializers.ModelSerializer):
     property = PropertySerializers(read_only=True)
     created_at = serializers.DateTimeField(format('%d-%m-%Y %H:%M'))
     check_in = serializers.DateTimeField(format('%d-%m-%Y %H:%M'))
-    check_out = serializers.DateTimeField(format('%d-%m-%Y %H:%M'))
+    check_out = serializers.DateTimeField(format='%d-%m-%Y %H:%M')
     class Meta:
         model = Booking
         fields = ['id', 'guest', 'property', 'check_in', 'check_out', 'status', 'created_at']
