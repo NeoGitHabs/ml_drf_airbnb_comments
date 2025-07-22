@@ -1,8 +1,18 @@
+from django.template.defaulttags import comment
 from rest_framework import serializers
 from .models import UserProfile, City, Property, Images, Booking, Review, Favorite, FavoriteItem, Amenity
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+import joblib
+from django.conf import settings
+import os
 
+
+model_path = os.path.join(settings.BASE_DIR, 'model.pkl')
+model = joblib.load(model_path)
+
+vec_path = os.path.join(settings.BASE_DIR, 'vec.pkl')
+vec = joblib.load(vec_path)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -82,7 +92,7 @@ class PropertySerializers(serializers.ModelSerializer):
     avg_rating = serializers.SerializerMethodField()
     class Meta:
         model = Property
-        fields = ['id', 'title', 'city', 'price_per_night', 'image', 'is_active', 'count_reviews', 'avg_rating']
+        fields = ['id', 'title', 'city', 'price_per_night', 'images', 'is_active', 'count_reviews', 'avg_rating']
 
     def get_avg_rating(self, obj):
         return obj.get_avg_rating()
@@ -94,9 +104,13 @@ class ReviewListSerializers(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format('%d-%m-%Y %H:%M'))
     guest = UserProfilePublicDateSerializers(read_only=True)
     property = PropertySerializers(read_only=True)
+    check_comments = serializers.SerializerMethodField()
     class Meta:
         model = Review
-        fields = ['id', 'guest', 'property', 'rating', 'comment', 'created_at']
+        fields = ['id', 'guest', 'property', 'rating', 'comment', 'check_comments', 'created_at']
+
+    def get_check_comments(self, obj):
+        return model.predict(vec.transform([obj.comment]))
 
 class AmenitySerializers(serializers.ModelSerializer):
     class Meta:

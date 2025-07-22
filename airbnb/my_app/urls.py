@@ -14,9 +14,9 @@ urlpatterns = [
     path('profile/', UserProfileAPIView.as_view(), name = 'profile'),
     path('profile_update/', UserProfileUpdateAPIView.as_view(), name = 'update_profile'),
 
-    path('properties/', PropertyListAPIView.as_view(), name = 'property_list'),
+    path('', PropertyListAPIView.as_view(), name = 'property_list'),
     path('property_create/', PropertyCreateAPIView.as_view(), name = 'property_list'),
-    path('properties/<int:pk>/', PropertyDetailAPIView.as_view(), name = 'property_details'),
+    path('<int:pk>/', PropertyDetailAPIView.as_view(), name = 'property_details'),
     path('property_update/<int:pk>/', PropertyUpdateAPIView.as_view(), name = 'property_update'),
 
     path('bookings/', BookingListAPIView.as_view(), name='booking_list'),
