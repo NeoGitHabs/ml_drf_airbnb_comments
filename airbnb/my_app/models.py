@@ -7,29 +7,24 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 USER_ROLE = (
     ('guest', 'guest'),
-    ('owner', 'owner'),
-    ('admin', 'admin')
-)
+    ('owner', 'owner'))
 
 PROPERTY_TYPE = (
     ('apartment', 'apartment'),
     ('house', 'house'),
-    ('studio', 'studio')
-)
+    ('studio', 'studio'))
 
 RULES = (
     ('no_smoking', 'no_smoking'),
     ('pets_allowed', 'pets_allowed'),
     ('wi-fi', 'wi-fi'),
-    ('etc', 'etc')
-)
+    ('etc', 'etc'))
 
 STATUS = (
     ('pending', 'pending'),
     ('approved', 'approved'),
     ('rejected', 'rejected'),
-    ('cancelled', 'cancelled')
-)
+    ('cancelled', 'cancelled'))
 
 class UserProfile(AbstractUser):
     email = models.EmailField(unique=True)
