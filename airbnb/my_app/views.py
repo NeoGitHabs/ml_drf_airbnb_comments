@@ -1,20 +1,18 @@
 from django.core.serializers import serialize
-from rest_framework import generics
-from rest_framework import permissions
+from rest_framework import generics, permissions, views, status
 from .filters import PropertyFilter
 from .permissions import CheckOwnerRoleReviews, CheckGuestRoleReviews, CheckAdminRoleReviews
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import UserSerializer, LoginSerializer
 from .models import UserProfile, City, Property, Images, Booking, Review, FavoriteItem #, Amenity
 from .serializers import (UserProfileSerializers, UserProfileUpdateSerializers, CitySerializers,
                           PropertySerializers, PropertyDetailSerializers, BookingListSerializers,
                           BookingCreateSerializers, ReviewListSerializers, ReviewCreateSerializers,
                           FavoriteItemListSerializer, PropertyUpdateSerializers, PropertyCreateSerializers) #, AmenitySerializers
-from rest_framework.response import Response
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status
-from .serializers import UserSerializer, LoginSerializer
 
 
 class RegisterView(generics.CreateAPIView):

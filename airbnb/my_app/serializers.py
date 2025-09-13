@@ -8,11 +8,11 @@ from django.conf import settings
 import os
 
 
-model_path = os.path.join(settings.BASE_DIR, 'model.pkl')
+model_path = os.path.join(settings.BASE_DIR, 'model_nb.pkl')
 model = joblib.load(model_path)
 
-vec_path = os.path.join(settings.BASE_DIR, 'vec.pkl')
-vec = joblib.load(vec_path)
+vector_path = os.path.join(settings.BASE_DIR, 'vector.pkl')
+vector = joblib.load(vector_path)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -110,7 +110,7 @@ class ReviewListSerializers(serializers.ModelSerializer):
         fields = ['id', 'guest', 'property', 'rating', 'comment', 'check_comments', 'created_at']
 
     def get_check_comments(self, obj):
-        return model.predict(vec.transform([obj.comment]))
+        return model.predict(vector.transform([obj.comment]))
 
 class AmenitySerializers(serializers.ModelSerializer):
     class Meta:
